@@ -237,6 +237,11 @@ impl NodeInfoToProtocol for NodeInfo {
             Some(Box::new(msg))
         })();
 
+        let display_type = self.attrs.iter()
+            .find(|attr| attr.name == "display")
+            .map(|attr| attr.value.clone())
+            .unwrap_or_else(|| "block".into());
+
         NodeActorMsg {
             actor,
             host,
@@ -244,7 +249,7 @@ impl NodeInfoToProtocol for NodeInfo {
             causes_overflow: false,
             container_type: None,
             display_name: self.node_name.clone().to_lowercase(),
-            display_type: Some("block".into()),
+            display_type: Some(display_type),
             inline_text_child,
             is_after_pseudo_element: false,
             is_anonymous: false,
